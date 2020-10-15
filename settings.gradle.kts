@@ -10,5 +10,6 @@ include(
         "core:ports:incoming:model",
         "core:ports:outgoing:model",
         "core:ports:outgoing:spi",
-        "common:common-rest"
+        "common:common-rest",
+        "common:common-persistence"
 )

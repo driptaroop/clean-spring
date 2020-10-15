@@ -40,12 +40,14 @@ subprojects {
     val implementation by configurations
     val testImplementation by configurations
     dependencies {
-        //implementation("org.springframework.boot:spring-boot-starter-data-jpa")
         api(platform(BOM_COORDINATES))
-        implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+
         implementation("org.jetbrains.kotlin:kotlin-reflect")
         implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-        //runtimeOnly("com.h2database:h2")
+
+        implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+        implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
+
         testImplementation("org.springframework.boot:spring-boot-starter-test") {
             exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
         }
