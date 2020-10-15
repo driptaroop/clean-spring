@@ -1,49 +1,67 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES
 
 plugins {
-    //id("org.springframework.boot") version "2.3.4.RELEASE"
-    //id("io.spring.dependency-management") version "1.0.10.RELEASE"
-    kotlin("jvm") version "1.3.72"
-    //kotlin("plugin.spring") version "1.3.72"
-    //kotlin("plugin.jpa") version "1.3.72"
+    val kotlinVersion = "1.4.10"
+    val springBootVersion = "2.3.4.RELEASE"
+    val springDependencyManagementVersion = "1.0.10.RELEASE"
+
+
+    id("org.springframework.boot") version springBootVersion apply false
+    id("io.spring.dependency-management") version springDependencyManagementVersion apply false
+    kotlin("jvm") version kotlinVersion apply false
+    kotlin("kapt") version kotlinVersion apply false
+    kotlin("plugin.spring") version kotlinVersion apply false
+    kotlin("plugin.jpa") version kotlinVersion apply false
+    id("org.jmailen.kotlinter") version "3.2.0" apply false
 }
 
-group = "org.example"
-version = "1.0-SNAPSHOT"
-//java.sourceCompatibility = JavaVersion.VERSION_11
-/*
-configurations {
-    compileOnly {
-        extendsFrom(configurations.annotationProcessor.get())
+allprojects {
+    repositories {
+        jcenter()
     }
-}
-*/
-repositories {
-    mavenCentral()
+
+    group = "org.dripto"
+    version = "1.0-SNAPSHOT"
 }
 
-dependencies {
-    /*implementation("org.springframework.boot:spring-boot-starter-actuator")
-    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-    implementation("org.springframework.boot:spring-boot-starter-web")
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")*/
-    implementation("org.jetbrains.kotlin:kotlin-reflect")
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-    /*developmentOnly("org.springframework.boot:spring-boot-devtools")
-    runtimeOnly("com.h2database:h2")
-    annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
-    testImplementation("org.springframework.boot:spring-boot-starter-test") {
-        exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
-    }*/
-}
-/*
-tasks.withType<Test> {
-    useJUnitPlatform()
-}*/
+subprojects {
+    apply {
+        plugin("io.spring.dependency-management")
+        plugin("org.jetbrains.kotlin.jvm")
+        plugin("org.jmailen.kotlinter")
+        plugin("org.jetbrains.kotlin.plugin.spring")
+    }
+    configure<JavaPluginExtension> {
+        sourceCompatibility = JavaVersion.VERSION_11
+    }
 
-tasks.withType<KotlinCompile> {
-    kotlinOptions {
-        freeCompilerArgs = listOf("-Xjsr305=strict")
-        jvmTarget = "11"
+    val api by configurations
+    val implementation by configurations
+    val testImplementation by configurations
+    dependencies {
+        api(platform(BOM_COORDINATES))
+
+        implementation("org.jetbrains.kotlin:kotlin-reflect")
+        implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+
+        implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+        implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
+
+        testImplementation("org.springframework.boot:spring-boot-starter-test") {
+            exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
+        }
+    }
+
+    tasks.withType<Test> {
+        useJUnitPlatform()
+    }
+
+    tasks.withType<KotlinCompile> {
+        kotlinOptions {
+            freeCompilerArgs = listOf("-Xjsr305=strict")
+            jvmTarget = "11"
+            languageVersion = "1.4"
+        }
     }
 }
