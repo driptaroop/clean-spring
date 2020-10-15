@@ -7,8 +7,8 @@ include(
         "core:domain:entity",
         "core:domain:service",
         "core:ports:incoming:api",
-        "core:ports:incoming:model",
-        "core:ports:outgoing:model",
+        "core:ports:incoming:command-query-model",
+        "core:ports:outgoing:datamodel",
         "core:ports:outgoing:spi",
         "common:common-rest",
         "common:common-persistence"

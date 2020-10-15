@@ -1,3 +1,3 @@
 dependencies {
-    api(project(":core:ports:outgoing:model"))
+    api(project(":core:ports:outgoing:datamodel"))
 }

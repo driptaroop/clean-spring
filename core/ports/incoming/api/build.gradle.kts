@@ -1,3 +1,3 @@
 dependencies {
-    api(project(":core:ports:incoming:model"))
+    api(project(":core:ports:incoming:command-query-model"))
 }
